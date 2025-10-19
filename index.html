@@ -848,13 +848,14 @@
         
         // Phát nhạc
         function playMusic() {
-            bgMusic.play();
+            const playPromise = bgMusic.play();
             musicBtn.innerHTML = '🎶';
             musicBtn.classList.add('playing');
             isPlaying = true;
             if (musicFiles.length > 1) {
                 musicControls.style.display = 'flex';
             }
+            return playPromise;
         }
         
         // Dừng nhạc
@@ -1052,6 +1053,13 @@
                 letterCard.classList.add('opened');
                 createConfetti();
                 letterOpened = true;
+                
+                // Tự động bật nhạc khi mở thư
+                if (!isPlaying) {
+                    playMusic().catch(() => {
+                        // Im lặng nếu lỗi
+                    });
+                }
             }
         });
     </script>
